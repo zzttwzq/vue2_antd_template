@@ -1,4 +1,4 @@
-<h1 align="center">真香CRM</h1>
+<h1 align="center">vue2_antd_template</h1>
 
 ## 浏览器支持
 现代浏览器及 IE10
