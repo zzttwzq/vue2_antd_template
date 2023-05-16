@@ -169,15 +169,6 @@ export default {
       return this.$store.state.setting.systemName;
     },
   },
-  mounted() {
-    // get_auth_public_key()
-    //   .then((res) => {
-    //     this.PASSWORD_RSA_KEY = res;
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-  },
   methods: {
     ...mapMutations("account", [
       "setUser",
@@ -239,26 +230,20 @@ export default {
         token: token,
         expireAt: new Date(time),
       });
-
-      res.menu = options.routes;
-
-      console.log(res.menu);
       
-
       // 设置用户信息
       this.setUser(res);
 
       // // 设置角色信息 设置路由拦截
-      let array = this.getMenuPaths(res.menu);
+      let array = this.getMenuPaths(options.routes);
       array.push("login");
       array.push("menu");
       this.setRoles(array);
 
-      // // 设置菜单信息
-      // console.log(JSON.stringify(res.menu));
+      // 设置菜单信息
       this.setRoutesConfig(res.menu);
 
-      // // 获取路由信息
+      // 获取路由信息
       loadRoutes();
 
       // 路由页面跳转

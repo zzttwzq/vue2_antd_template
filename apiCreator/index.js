@@ -913,7 +913,7 @@ export async function ${it.method.toLowerCase() + '_' + pathname}(${request_para
         var copyright = `
 /**
 * @file ${name}数据接口导出模块.
-* @copyright Duoxi Network .CO .LTD @2011
+* @copyright wzq
 */
 \r\n
 `;
