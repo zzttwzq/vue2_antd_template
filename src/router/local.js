@@ -1,6 +1,4 @@
 import TabsView from '@/layouts/tabs/TabsView'
-//### 自动生成的Routers1
-//### 自动生成的Routers1
 
 // 全局路由配置
 // 内容路由需要添加在 首页 下面，如果要显示在侧边栏则需要添加 
@@ -39,8 +37,8 @@ const routesConfig = [{
                     import ('@/pages/home/'),
             },
 
-            //### 自动生成的Routers2
-            //### 自动生成的Routers2
+            //### 自动生成的Router
+            //### 自动生成的Routers
         ]
     },
 ];

@@ -37,7 +37,7 @@ const Timestamp = new Date().getTime();
 
 module.exports = {
     devServer: {
-        port: 8090,
+        port: 8900,
         proxy: {
             '^/blog': {
                 //此处要与 /services/api.js 中的 API_PROXY_PREFIX 值保持一致

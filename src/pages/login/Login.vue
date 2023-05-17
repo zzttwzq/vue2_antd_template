@@ -240,6 +240,9 @@ export default {
       array.push("menu");
       this.setRoles(array);
 
+      console.log(">>>res", res);
+      console.log(">>>array", array);
+
       // 设置菜单信息
       this.setRoutesConfig(res.menu);
 

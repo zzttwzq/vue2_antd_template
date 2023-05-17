@@ -1,5 +1,5 @@
 import { request, METHOD } from "@/utils/request";
-import { CONFIG_OSS } from '@/services/api'
+import { CONFIG_OSS } from '@/api/api'
 
 let UploadAliOss = {
     install(Vue) {

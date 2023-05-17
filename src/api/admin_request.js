@@ -4,7 +4,7 @@
  */
 
 
-import { ADMIN_USER_ADD, ADMIN_USER_UPDATE, ADMIN_USER_DELETE, ADMIN_USER_INFO, ADMIN_USER_LIST, ADMIN_USER_LOGIN, } from '@/services/api'
+import { ADMIN_USER_ADD, ADMIN_USER_UPDATE, ADMIN_USER_DELETE, ADMIN_USER_INFO, ADMIN_USER_LIST, ADMIN_USER_LOGIN, } from '@/api/api'
 import { request, METHOD } from '@/utils/request'
 
 /**
@@ -76,28 +76,3 @@ export default {
     post_admin_user_list,
     post_admin_user_login,
 }
-
-
-// post_admin_user_add({});
-
-// post_admin_user_update({});
-
-// post_admin_user_delete({});
-
-// post_admin_user_info({});
-
-// post_admin_user_list({});
-
-// post_admin_user_login({});
-
-// post_admin_user_add({});
-
-// post_admin_user_update({});
-
-// post_admin_user_delete({});
-
-// post_admin_user_info({});
-
-// post_admin_user_list({});
-
-// post_admin_user_login({});
