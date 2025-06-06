@@ -1,9 +1,9 @@
-import { message } from 'ant-design-vue'
-import axios from 'axios'
-import Cookie from 'js-cookie'
+import { message } from 'ant-design-vue';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 // 跨域认证信息 header 名
-const xsrfHeaderName = 'Authorization'
+const xsrfHeaderName = 'Authorization';
 
 // axios.defaults.timeout = 16000
 // axios.defaults.withCredentials = false
@@ -12,119 +12,145 @@ const xsrfHeaderName = 'Authorization'
 
 // 认证类型
 const AUTH_TYPE = {
-    BEARER: 'Bearer',
-    BASIC: 'basic',
-    AUTH1: 'auth1',
-    AUTH2: 'auth2',
-}
+  BEARER: 'Bearer',
+  BASIC: 'basic', 
+  AUTH1: 'auth1',
+  AUTH2: 'auth2',
+};
 
 // http method
 const METHOD = {
-    GET: 'get',
-    POST: 'post',
-    PUT: 'put',
-    DELETE: 'delete'
-}
+  GET: 'get',
+  POST: 'post',
+  PUT: 'put',
+  DELETE: 'delete',
+};
 
-// 获取操作系统信息 
+// 获取操作系统信息
 function getOsInfo() {
-    var userAgent = navigator.userAgent.toLowerCase();
-    var name = 'Unknown';
-    var version = 'Unknown';
-    if (userAgent.indexOf('win') > -1) {
-        name = 'Windows';
-        if (userAgent.indexOf('windows nt 5.0') > -1) {
-            version = 'Windows 2000';
-        } else if (userAgent.indexOf('windows nt 5.1') > -1 || userAgent.indexOf('windows nt 5.2') > -1) {
-            version = 'Windows XP';
-        } else if (userAgent.indexOf('windows nt 6.0') > -1) {
-            version = 'Windows Vista';
-        } else if (userAgent.indexOf('windows nt 6.1') > -1 || userAgent.indexOf('windows 7') > -1) {
-            version = 'Windows 7';
-        } else if (userAgent.indexOf('windows nt 6.2') > -1 || userAgent.indexOf('windows 8') > -1) {
-            version = 'Windows 8';
-        } else if (userAgent.indexOf('windows nt 6.3') > -1) {
-            version = 'Windows 8.1';
-        } else if (userAgent.indexOf('windows nt 6.2') > -1 || userAgent.indexOf('windows nt 10.0') > -1) {
-            version = 'Windows 10';
-        } else {
-            version = 'Unknown';
-        }
-    } else if (userAgent.indexOf('iphone') > -1) {
-        name = 'Iphone';
-    } else if (userAgent.indexOf('mac') > -1) {
-        name = 'Mac';
-    } else if (userAgent.indexOf('x11') > -1 || userAgent.indexOf('unix') > -1 || userAgent.indexOf('sunname') > -1 || userAgent.indexOf('bsd') > -1) {
-        name = 'Unix';
-    } else if (userAgent.indexOf('linux') > -1) {
-        if (userAgent.indexOf('android') > -1) {
-            name = 'Android';
-        } else {
-            name = 'Linux';
-        }
+  var userAgent = navigator.userAgent.toLowerCase();
+  var name = 'Unknown';
+  var version = 'Unknown';
+  if (userAgent.indexOf('win') > -1) {
+    name = 'Windows';
+    if (userAgent.indexOf('windows nt 5.0') > -1) {
+      version = 'Windows 2000';
+    } else if (
+      userAgent.indexOf('windows nt 5.1') > -1 ||
+      userAgent.indexOf('windows nt 5.2') > -1
+    ) {
+      version = 'Windows XP';
+    } else if (userAgent.indexOf('windows nt 6.0') > -1) {
+      version = 'Windows Vista';
+    } else if (
+      userAgent.indexOf('windows nt 6.1') > -1 ||
+      userAgent.indexOf('windows 7') > -1
+    ) {
+      version = 'Windows 7';
+    } else if (
+      userAgent.indexOf('windows nt 6.2') > -1 ||
+      userAgent.indexOf('windows 8') > -1
+    ) {
+      version = 'Windows 8';
+    } else if (userAgent.indexOf('windows nt 6.3') > -1) {
+      version = 'Windows 8.1';
+    } else if (
+      userAgent.indexOf('windows nt 6.2') > -1 ||
+      userAgent.indexOf('windows nt 10.0') > -1
+    ) {
+      version = 'Windows 10';
     } else {
-        name = 'Unknown';
+      version = 'Unknown';
     }
-    return { name, version };
+  } else if (userAgent.indexOf('iphone') > -1) {
+    name = 'Iphone';
+  } else if (userAgent.indexOf('mac') > -1) {
+    name = 'Mac';
+  } else if (
+    userAgent.indexOf('x11') > -1 ||
+    userAgent.indexOf('unix') > -1 ||
+    userAgent.indexOf('sunname') > -1 ||
+    userAgent.indexOf('bsd') > -1
+  ) {
+    name = 'Unix';
+  } else if (userAgent.indexOf('linux') > -1) {
+    if (userAgent.indexOf('android') > -1) {
+      name = 'Android';
+    } else {
+      name = 'Linux';
+    }
+  } else {
+    name = 'Unknown';
+  }
+  return { name, version };
 }
 
 function getRequestHeader() {
-    var { name, version } = getOsInfo();
-    var time = (new Date()).valueOf();
-    var headers = {
-        'os': name + ' ' + version,
-        'app_version': '1.0.0',
-        'timestamp': time,
-        'app_store': 'web',
-        'Client': 'admin',
-        // 'Client': 'admin',
-        // 'Content-Type': 'text/plain;charset=UTF-8',
-        // 'Content-Type': 'text/html;charset=UTF-8',
-        'Content-Type': 'application/json',
-    };
+  var { name, version } = getOsInfo();
+  var time = new Date().valueOf();
+  var headers = {
+    "os": name + ' ' + version,
+    "App-Version": '1.0.0',
+    "Time-Stamp": time,
+    "App-Store": 'web',
+    'Content-Type': 'application/json',
+  };
 
-    if (localStorage.getItem(process.env.VUE_APP_USER_TOKEN_KEY)) {
-        headers.Authorization = localStorage.getItem(process.env.VUE_APP_USER_TOKEN_KEY)
-    }
+  if (localStorage.getItem(process.env.VUE_APP_USER_TOKEN_KEY)) {
+    headers.Authorization = localStorage.getItem(
+      process.env.VUE_APP_USER_TOKEN_KEY
+    );
+    headers["Site-No"] = localStorage.getItem(
+      process.env.VUE_APP_SITE_NO_KEY
+    );
+  }
 
-    return headers;
+  return headers;
 }
 
 function handelSuccess(res, resolve, reject) {
-    if (res.status == 200) {
-        if (res.data.code == 200) {
-            if (res.data.total || res.data.total === 0) {
-                resolve(res.data);
-            } else {
-                resolve(res.data.data ? res.data.data : res.data);
-            }
-        } else {
-            message.error(res.data.msg);
-            reject(res.data);
-        }
+  if (res.status == 200) {
+    if (res.data.code == 200) {
+      resolve(res.data.data ? res.data : res);
     } else {
-        reject(res);
+      handelError(res, reject);
     }
+  } else {
+    handelError(res, reject);
+  }
 }
 
 function handelError(err, reject) {
+  pringLog(err, false);
 
-    if (err.response && err.response.status == 401) {
-        removeAuthorization();
-        window.location.href = window.location.href.split('#')[0] + '#/login';
-    } else if (err.response && err.response.status == 403) {
-        message.warning(`对不起，暂无权限，请联系管理员！`);
-        // removeAuthorization();
-        // window.open(window.location.href.split('#')[0] + '#/403');
-    } else {
-        if (err.response && err.response.data && err.response.data.message) {
-            message.error(err.response.data.message);
-        } else {
-            message.error(err.response.status + ': ' + err.response.statusText);
-        }
+  if (err && err.status == 401) {
+    message.warning(`登录已失效！`);
+    removeAuthorization();
+    window.location.href = window.location.href.split('#')[0] + '#/login';
+  } else if (err && err.status == 403) {
+    message.warning(`登录已失效！`);
+    removeAuthorization();
+    window.location.href = window.location.href.split('#')[0] + '#/login';
+  } else {
+    if (err && err.data && err.data.msg && err.data.msg != '') {
+      message.error(err.data.msg);
     }
+  }
 
-    reject(err);
+  reject(err);
+}
+
+function pringLog(res, success = true) {
+  console.log(
+    `============ ${res.config.url} ${success ? '成功' : '失败'} ============`
+  );
+  console.log(`[ headers ]`, res.config.headers);
+  console.log(`[ timeout ]`, res.config.timeout);
+  console.log(`[ method  ]`, res.config.method);
+  console.log(`[ params  ]`, res.config.params);
+  console.log(`[  data   ]`, res.config.data);
+  console.log(`[ status  ]`, res.config.status);
+  console.log(`[   res   ]`, res.data);
 }
 
 /**
@@ -135,31 +161,41 @@ function handelError(err, reject) {
  * @returns {Promise<AxiosResponse<T>>}
  */
 async function request(url, method, params) {
+  // 创建axios实例
+  const instance = axios.create();
 
-    // axios.interceptors.response.use(function(response) {
-    //     return response;
-    // }, function(error) {
-    //     // 如4xx/5xx等基本错误的处理
-    //     alert('全局错误处理')
+  return new Promise(function (resolve, reject) {
+    instance
+      .request({
+        url: url,
+        method: method,
+        // baseURL?: process.env.baseURL
+        headers: getRequestHeader(),
+        params: method == 'get' ? params : {},
+        data: method != 'get' ? params : {},
+        timeout: 100000,
+      })
+      .then((res) => {
+        handelSuccess(res, resolve, reject);
+      })
+      .catch((err) => {
+        let errCode = 0;
+        if (err.message.indexOf('Request failed with status code 401') >= 0) {
+          errCode = 401;
+        } else if (
+          err.message.indexOf('Request failed with status code 403') >= 0
+        ) {
+          errCode = 403;
+        } else if (
+          err.message.indexOf('Request failed with status code 50') >= 0
+        ) {
+          errCode = 500;
+        }
+        err.status = errCode;
 
-    //     return Promise.reject(error);
-    // });
-
-    return new Promise(function(resolve, reject) {
-        axios.request({
-            url: url,
-            method: method,
-            // baseURL?: process.env.baseURL
-            headers: getRequestHeader(),
-            params: method == 'get' ? params : {},
-            data: method != 'get' ? params : {},
-            timeout: 16000,
-        }).then(res => {
-            handelSuccess(res, resolve, reject);
-        }).catch(err => {
-            handelError(err, reject);
-        });
-    });
+        handelError(err, reject);
+      });
+  });
 }
 
 /**
@@ -169,22 +205,25 @@ async function request(url, method, params) {
  * @returns {Promise<AxiosResponse<T>>}
  */
 async function uploadFile(url, data) {
-    return new Promise(function(resolve, reject) {
-        let headers = getRequestHeader();
-        headers['Content-Type'] = 'multipart/form-data';
+  return new Promise(function (resolve, reject) {
+    let headers = getRequestHeader();
+    headers['Content-Type'] = 'multipart/form-data';
 
-        axios.request({
-            url: url,
-            method: 'POST',
-            headers: headers,
-            data: data,
-            timeout: 16000,
-        }).then(res => {
-            handelSuccess(res, resolve, reject);
-        }).catch(err => {
-            handelError(err, reject);
-        });
-    });
+    axios
+      .request({
+        url: url,
+        method: 'POST',
+        headers: headers,
+        data: data,
+        timeout: 16000,
+      })
+      .then((res) => {
+        handelSuccess(res, resolve, reject);
+      })
+      .catch((err) => {
+        handelError(err, reject);
+      });
+  });
 }
 
 /**
@@ -193,16 +232,18 @@ async function uploadFile(url, data) {
  * @param authType {AUTH_TYPE} 认证类型，默认：{AUTH_TYPE.BEARER}
  */
 function setAuthorization(auth, authType = AUTH_TYPE.BEARER) {
-    switch (authType) {
-        case AUTH_TYPE.BEARER:
-            Cookie.set(xsrfHeaderName, 'Bearer ' + auth.token, { expires: auth.expireAt })
-            break;
-        case AUTH_TYPE.BASIC:
-        case AUTH_TYPE.AUTH1:
-        case AUTH_TYPE.AUTH2:
-        default:
-            break;
-    }
+  switch (authType) {
+    case AUTH_TYPE.BEARER:
+      Cookies.set(xsrfHeaderName, 'Bearer ' + auth.token, {
+        expires: auth.expireAt,
+      });
+      break;
+    case AUTH_TYPE.BASIC:
+    case AUTH_TYPE.AUTH1:
+    case AUTH_TYPE.AUTH2:
+    default:
+      break;
+  }
 }
 
 /**
@@ -210,16 +251,16 @@ function setAuthorization(auth, authType = AUTH_TYPE.BEARER) {
  * @param authType {AUTH_TYPE} 认证类型
  */
 function removeAuthorization(authType = AUTH_TYPE.BEARER) {
-    switch (authType) {
-        case AUTH_TYPE.BEARER:
-            Cookie.remove(xsrfHeaderName)
-            break;
-        case AUTH_TYPE.BASIC:
-        case AUTH_TYPE.AUTH1:
-        case AUTH_TYPE.AUTH2:
-        default:
-            break;
-    }
+  switch (authType) {
+    case AUTH_TYPE.BEARER:
+      Cookies.remove(xsrfHeaderName);
+      break;
+    case AUTH_TYPE.BASIC:
+    case AUTH_TYPE.AUTH1:
+    case AUTH_TYPE.AUTH2:
+    default:
+      break;
+  }
 }
 
 /**
@@ -228,19 +269,19 @@ function removeAuthorization(authType = AUTH_TYPE.BEARER) {
  * @returns {boolean}
  */
 function checkAuthorization(authType = AUTH_TYPE.BEARER) {
-    switch (authType) {
-        case AUTH_TYPE.BEARER:
-            if (Cookie.get(xsrfHeaderName)) {
-                return true
-            }
-            break;
-        case AUTH_TYPE.BASIC:
-        case AUTH_TYPE.AUTH1:
-        case AUTH_TYPE.AUTH2:
-        default:
-            break;
-    }
-    return false
+  switch (authType) {
+    case AUTH_TYPE.BEARER:
+      if (Cookies.get(xsrfHeaderName)) {
+        return true;
+      }
+      break;
+    case AUTH_TYPE.BASIC:
+    case AUTH_TYPE.AUTH1:
+    case AUTH_TYPE.AUTH2:
+    default:
+      break;
+  }
+  return false;
 }
 
 /**
@@ -249,29 +290,30 @@ function checkAuthorization(authType = AUTH_TYPE.BEARER) {
  * @returns {Object}
  */
 function parseUrlParams(url) {
-    const params = {}
-    if (!url || url === '' || typeof url !== 'string') {
-        return params
-    }
-    const paramsStr = url.split('?')[1]
-    if (!paramsStr) {
-        return params
-    }
-    const paramsArr = paramsStr.replace(/&|=/g, ' ').split(' ')
-    for (let i = 0; i < paramsArr.length / 2; i++) {
-        const value = paramsArr[i * 2 + 1]
-        params[paramsArr[i * 2]] = value === 'true' ? true : (value === 'false' ? false : value)
-    }
-    return params
+  const params = {};
+  if (!url || url === '' || typeof url !== 'string') {
+    return params;
+  }
+  const paramsStr = url.split('?')[1];
+  if (!paramsStr) {
+    return params;
+  }
+  const paramsArr = paramsStr.replace(/&|=/g, ' ').split(' ');
+  for (let i = 0; i < paramsArr.length / 2; i++) {
+    const value = paramsArr[i * 2 + 1];
+    params[paramsArr[i * 2]] =
+      value === 'true' ? true : value === 'false' ? false : value;
+  }
+  return params;
 }
 
 export {
-    METHOD,
-    AUTH_TYPE,
-    request,
-    uploadFile,
-    setAuthorization,
-    removeAuthorization,
-    checkAuthorization,
-    parseUrlParams
-}
+  METHOD,
+  AUTH_TYPE,
+  request,
+  uploadFile,
+  setAuthorization,
+  removeAuthorization,
+  checkAuthorization,
+  parseUrlParams,
+};

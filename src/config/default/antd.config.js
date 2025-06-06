@@ -6,18 +6,18 @@ const ANTD = {
     success: '#52c41a',
     error: '#f5222d',
     light: {
-      menuColors: ['#000c17', '#001529', '#002140']
+      menuColors: ['#000c17', '#001529', '#002140'],
     },
     dark: {
-      menuColors: ['#000c17', '#001529', '#002140']
+      menuColors: ['#000c17', '#001529', '#002140'],
     },
     night: {
       menuColors: ['#151515', '#1f1f1f', '#1e1e1e'],
-    }
+    },
   },
   theme: {
     dark: {
-      'layout-body-background': '#f0f2f5',
+      'layout-body-background': '#000',
       'body-background': '#fff',
       'component-background': '#fff',
       'heading-color': 'rgba(0, 0, 0, 0.85)',
@@ -32,13 +32,13 @@ const ANTD = {
       'table-expanded-row-bg': '#fbfbfb',
       'checkbox-check-color': '#fff',
       'disabled-color': 'rgba(0, 0, 0, 0.25)',
-      'menu-dark-color': 'rgba(254, 254, 254, 0.65)',
+      'menu-dark-color': '#fefefe',
       'menu-dark-highlight-color': '#fefefe',
       'menu-dark-arrow-color': '#fefefe',
       'btn-primary-color': '#fff',
     },
     light: {
-      'layout-body-background': '#f0f2f5',
+      'layout-body-background': 'red',
       'body-background': '#fff',
       'component-background': '#fff',
       'heading-color': 'rgba(0, 0, 0, 0.85)',
@@ -53,13 +53,13 @@ const ANTD = {
       'table-expanded-row-bg': '#fbfbfb',
       'checkbox-check-color': '#fff',
       'disabled-color': 'rgba(0, 0, 0, 0.25)',
-      'menu-dark-color': 'rgba(1, 1, 1, 0.65)',
+      'menu-dark-color': '#fefefe',
       'menu-dark-highlight-color': '#fefefe',
       'menu-dark-arrow-color': '#fefefe',
       'btn-primary-color': '#fff',
     },
     night: {
-      'layout-body-background': '#000',
+      'layout-body-background': 'red',
       'body-background': '#141414',
       'component-background': '#141414',
       'heading-color': 'rgba(255, 255, 255, 0.85)',
@@ -78,7 +78,7 @@ const ANTD = {
       'menu-dark-highlight-color': '#fefefe',
       'menu-dark-arrow-color': '#fefefe',
       'btn-primary-color': '#141414',
-    }
-  }
-}
-module.exports = ANTD
+    },
+  },
+};
+module.exports = ANTD;

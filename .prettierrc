@@ -1,0 +1,10 @@
+{
+  "printWidth": 80,
+  "vueIndentScriptAndStyle": true,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "bracketSameLine": false,
+  "htmlWhitespaceSensitivity": "ignore",
+  "jsxBracketSameLine": false,
+  "plugins": ["prettier-plugin-vue"]
+}

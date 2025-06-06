@@ -1,7 +1,7 @@
 const PublicServices = {
-    install: function(Vue) {
-        Vue.prototype.$services = {};
-    }
-}
+  install: function (Vue) {
+    Vue.prototype.$services = {};
+  },
+};
 
-export default PublicServices
+export default PublicServices;

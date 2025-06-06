@@ -1,258 +1,216 @@
 <template>
   <common-layout>
+    <div class="header2">
+      <img src="@/assets/img/logo.png" style="width: 30px; margin-right: 20px" alt="" />
+      <span>{{ logoName }}</span>
+    </div>
     <div class="top">
       <div class="header">
-        <img alt="logo" class="logo" src="@/assets/img/logo.png" />
         <span class="title">{{ systemName }}</span>
       </div>
       <div class="desc"></div>
     </div>
     <div class="login">
-      <a-form @submit="onSubmit" :form="form">
-        <a-tabs
-          size="large"
-          :tabBarStyle="{ textAlign: 'center' }"
-          style="padding: 0 2px"
-        >
-          <a-tab-pane tab="账户密码登录" key="1">
-            <a-alert
-              type="error"
-              :closable="true"
-              v-if="error"
-              :message="error"
-              showIcon
-              style="margin-bottom: 24px"
-            />
-            <a-form-item>
-              <a-input
-                autocomplete="autocomplete"
-                size="large"
-                placeholder=""
-                v-decorator="[
-                  'name',
-                  {
-                    rules: [
-                      {
-                        required: true,
-                        message: '请输入账户名',
-                        whitespace: true,
-                      },
-                    ],
-                  },
-                ]"
-              >
-                <a-icon slot="prefix" type="user" />
-              </a-input>
-            </a-form-item>
-            <a-form-item>
-              <a-input
-                size="large"
-                placeholder=""
-                autocomplete="autocomplete"
-                type="password"
-                v-decorator="[
-                  'password',
-                  {
-                    rules: [
-                      {
-                        required: true,
-                        message: '请输入密码',
-                        whitespace: true,
-                      },
-                    ],
-                  },
-                ]"
-              >
-                <a-icon slot="prefix" type="lock" />
-              </a-input>
-            </a-form-item>
-          </a-tab-pane>
-          <!-- <a-tab-pane tab="手机号登录" key="2">
-            <a-form-item>
-              <a-input
-                size="large"
-                placeholder="请输入手机号"
-                v-decorator="[
-                  'phone',
-                  {
-                    rules: [
-                      { required: true, message: '请输入手机号', whitespace: true },
-                    ],
-                  },
-                ]"
-              >
-                <a-icon slot="prefix" type="mobile" />
-              </a-input>
-            </a-form-item>
-            <a-form-item>
-              <a-row :gutter="8" style="margin: 0 -4px">
-                <a-col :span="16">
-                  <a-input
-                    size="large"
-                    placeholder="请输入验证码"
-                    v-decorator="[
-                      'code',
-                      {
-                        rules: [
-                          { required: true, message: '请输入验证码', whitespace: true },
-                        ],
-                      },
-                    ]"
-                  >
-                    <a-icon slot="prefix" type="mail" />
-                  </a-input>
-                </a-col>
-                <a-col :span="8" style="padding-left: 4px">
-                  <a-button
-                    style="width: 100%"
-                    class="captcha-button"
-                    @click="getSmsCode()"
-                    size="large"
-                    >获取验证码</a-button
-                  >
-                </a-col>
-              </a-row>
-            </a-form-item>
-          </a-tab-pane> -->
-        </a-tabs>
-        <div>
-          <!-- <a-checkbox :checked="true" >自动登录</a-checkbox> -->
-          <!-- <a style="float: right">忘记密码</a> -->
-        </div>
+      <div style="display: flex; justify-content: center; align-items: center">
+        <span style="font-size: 20px; margin-bottom: 20px">账号登录</span>
+      </div>
+      <a-form @submit="onSubmit" class="flex-row-center" :form="form">
+        <a-alert type="error" :closable="true" v-if="error" :message="error" showIcon style="margin-bottom: 24px" />
         <a-form-item>
-          <a-button
-            :loading="logging"
-            style="width: 100%; margin-top: 24px"
-            size="large"
-            htmlType="submit"
-            type="primary"
-            >登录</a-button
-          >
+          <a-input style="width: 100%;" autocomplete="autocomplete" size="large" placeholder="请输入您的登录账号" v-decorator="[
+            'name',
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入您的登录账号',
+                  whitespace: true,
+                },
+              ],
+            },
+          ]"></a-input>
         </a-form-item>
-        <!-- <div>
-          其他登录方式
-          <a-icon class="icon" type="alipay-circle" />
-          <a-icon class="icon" type="taobao-circle" />
-          <a-icon class="icon" type="weibo-circle" />
-          <router-link style="float: right" to="/login" >注册账户</router-link>
-        </div> -->
+        <a-form-item>
+          <a-input size="large" placeholder="请输入您收到的验证码" autocomplete :maxLength="6" v-decorator="[
+            'password',
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入您收到的验证码',
+                  whitespace: true,
+                },
+              ],
+            },
+          ]">
+            <span @click="getSmsCode" :style="'cursor: pointer;' + code_color" slot="suffix">
+              {{ code_tip }}
+            </span>
+          </a-input>
+        </a-form-item>
+        <div></div>
+        <a-form-item>
+          <!-- <div style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-top: 30px;
+            ">
+            <a-checkbox style="font-size: 12px" v-model="checked">
+              我已阅读并同意：
+              <router-link to="">用户协议</router-link>
+              、
+              <router-link to="">隐私政策</router-link>
+              、
+              <router-link to="">产品服务协议</router-link>
+            </a-checkbox>
+          </div> -->
+          <div style="display: flex; justify-content: center; align-items: center">
+            <a-button :loading="logging" style="
+                width: 100%;
+                margin-top: 0;
+                border-radius: 20px;
+                background-color: rgb(245, 188, 93);
+                border: solid rgb(245, 188, 93) 1px;
+                width: 300px;
+              " size="large" htmlType="submit" type="primary">
+              登录
+            </a-button>
+          </div>
+          <!-- <div style="display: flex; justify-content: center; align-items: center">
+            <span>
+              还没账户？
+              <router-link to="/register">前往注册》</router-link>
+            </span>
+          </div> -->
+        </a-form-item>
       </a-form>
     </div>
   </common-layout>
 </template>
 
 <script>
-import CommonLayout from "@/layouts/CommonLayout";
-import { setAuthorization } from "@/utils/request";
-// import { 
-//   post_admin_user_login,
-// } from "@/services/admin_request";
-import { mapMutations } from "vuex";
-// import JSEncrypt from "jsencrypt";
-import { loadRoutes } from "@/utils/routerUtil";
-import options from "@/router/local";
-// import md5 from 'js-md5';
+// import md5 from "js-md5";
+import { mapMutations } from 'vuex';
+
+import CommonLayout from '@/layouts/CommonLayout';
+import { setAuthorization } from '@/utils/request';
+import { loadRoutes } from '@/utils/routerUtil';
+import { addDynamicRoutes } from '@/router/index';
+import options from '@/router/local';
+
+import { getAdminUserInfo, loginAdminWithPhone, sendAdminSms } from '@/api/CustomRequest';
 
 export default {
-  name: "Login",
+  name: 'Login',
   components: { CommonLayout },
   data() {
     return {
       logging: false,
-      error: "",
+      checked: false,
+      error: '',
       form: this.$form.createForm(this),
-      PASSWORD_RSA_KEY: "",
+      code_tip: '获取验证码',
+      count_down: 60,
+      code_color: 'color: rgb(245, 188, 93);',
     };
   },
   computed: {
     systemName() {
       return this.$store.state.setting.systemName;
     },
+    logoName() {
+      return this.$store.state.setting.logoName;
+    },
+  },
+  mounted() {
+    let phone = this.$route.query.phone;
+
+    this.$nextTick(() => {
+      this.form.setFieldsValue({
+        name: phone,
+      });
+    });
   },
   methods: {
-    ...mapMutations("account", [
-      "setUser",
-      "setPermissions",
-      "setRoles",
-      "setRoutesConfig",
+    ...mapMutations('account', [
+      'setUser',
+      'setPermissions',
+      'setRoles',
+      'setRoutesConfig',
     ]),
-    getSmsCode() {
-      const phone = this.form.getFieldValue("phone");
-      if (!phone || phone.length === 0) {
-        this.$message.error("手机号不正确！");
-        return;
-      }
-    },
     onSubmit(e) {
       e.preventDefault();
+
       this.form.validateFields((err, val) => {
         if (!err) {
-
+          if (val.password.length != 6) {
+            this.logging = false;
+            this.$message.error('请输入正确的验证码！');
+            return;
+          }
           this.logging = true;
-          console.log(val);
 
-          // const name = val.name;
-          // const password = md5(val.password);
-
-          this.afterLogin({
-            token: '123',
-            nick_name: 'yayay',
-            menu: []
-          });
-
-          // post_admin_user_login({
-          //   username: name,
-          //   password: password,
-          // })
-          //   .then((res) => {
-          //     this.afterLogin(res);
-          //   })
-          //   .catch(() => {
-          //     this.logging = false;
-          //   });
+          const name = val.name;
+          const password = val.password;
+          loginAdminWithPhone(name, password)
+            .then((res) => {
+              this.getUserInfoReq(res.data.token, res.data.expire);
+            })
+            .catch(() => {
+              this.logging = false;
+            });
+        } else {
+          this.logging = false;
         }
       });
     },
-    afterLogin(res) {
-      console.log(res);
-
-      this.logging = false;
-
-      this.$message.success(`欢迎您👏， ${res.nick_name}`, 3);
-
+    async getUserInfoReq(token, expire) {
       // 记录token
-      const token = res.token;
       localStorage.setItem(process.env.VUE_APP_USER_TOKEN_KEY, token);
 
       // 设置token超时时间
-      let time = new Date().valueOf + 24 * 60 * 60 * 1000;
+      let time = new Date().valueOf() + expire;
       setAuthorization({
         token: token,
         expireAt: new Date(time),
       });
-      
+
+      let res = await getAdminUserInfo();
+      localStorage.setItem(process.env.VUE_APP_SITE_NO_KEY, res.data.siteNo);
+
+      this.logging = false;
+      this.afterLogin(res.data);
+    },
+    afterLogin(res) {
+      this.logging = false;
+      this.$message.success(`欢迎您👏， ${res.nickName}`, 3);
+
       // 设置用户信息
       this.setUser(res);
 
-      // // 设置角色信息 设置路由拦截
-      let array = this.getMenuPaths(options.routes);
-      array.push("login");
-      array.push("menu");
-      this.setRoles(array);
-
       // 设置菜单信息
       this.setRoutesConfig(res.menu);
+
+      // 添加动态路由
+      addDynamicRoutes(this.$router, res.menus);
+
+      // 设置路由拦截
+      let array = this.getMenuPaths(options.routes);
+      array.push('login');
+      array.push('register');
+      array.push('userInfo');
+      this.setRoles(array);
 
       // 获取路由信息
       loadRoutes();
 
       // 路由页面跳转
-      this.$router.push("/home");
-      // window.href.reload();
+      this.$router.push('/user/userManager');
 
       let str = window.location.href;
-      if (str.indexOf("?#") > -1) {
-        str = str.replace("?#", "#");
+      if (str.indexOf('?#') > -1) {
+        str = str.replace('?#', '#');
         window.location.href = str;
       }
     },
@@ -261,7 +219,7 @@ export default {
 
       roles.map((it) => {
         let path = it.path;
-        path = path.split("/");
+        path = path.split('/');
         path = path[path.length - 1];
         list.push(path);
 
@@ -273,35 +231,81 @@ export default {
 
       return list;
     },
+    async getSmsCode() {
+      if (this.count_down < 60) {
+        this.$message.error(`请等待${this.count_down}s后再次获取`);
+        return;
+      }
+
+      const phone = this.form.getFieldValue('name');
+      console.log(">>>", phone);
+
+      let res = await sendAdminSms(phone);
+      if (res.data.code == 200) {
+        this.$message.success(res.data.msg);
+        this.code_color = 'color: grey;';
+
+        var id = setInterval(() => {
+          this.count_down--;
+          if (this.count_down <= 0) {
+            this.count_down = 60;
+            this.code_color = 'color: rgb(245, 188, 93);';
+            this.code_tip = '获取验证码';
+            clearInterval(id);
+          } else {
+            this.code_tip = `重新获取(${this.count_down})`;
+          }
+        }, 1000);
+      } else {
+        this.$message.error(res.data.msg);
+      }
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
+.header2 {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 60px;
+  line-height: 60px;
+  background-color: white;
+  padding-left: 30px;
+}
+
 .common-layout {
   .top {
     text-align: center;
+
     .header {
       height: 44px;
       line-height: 44px;
+      margin-top: 80px;
+
       a {
         text-decoration: none;
       }
+
       .logo {
         height: 44px;
         vertical-align: top;
         margin-right: 16px;
       }
+
       .title {
         font-size: 33px;
         color: @title-color;
         font-family: "Myriad Pro", "Helvetica Neue", Arial, Helvetica,
           sans-serif;
-        font-weight: 600;
+        font-weight: 400;
         position: relative;
         top: 2px;
       }
     }
+
     .desc {
       font-size: 14px;
       color: @text-color-second;
@@ -309,17 +313,27 @@ export default {
       margin-bottom: 40px;
     }
   }
+
   .login {
-    width: 368px;
+    width: 500px;
+    height: 285px;
     margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
+    /* 悬浮时阴影加深 */
+
     @media screen and (max-width: 576px) {
       width: 95%;
     }
+
     @media screen and (max-width: 320px) {
       .captcha-button {
         font-size: 14px;
       }
     }
+
     .icon {
       font-size: 24px;
       color: @text-color-second;

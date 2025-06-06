@@ -2,7 +2,8 @@
   <div>
     <div v-if="title">{{ title }}：</div>
 
-    <draggable :options="{draggable:'.item_content'}"
+    <draggable
+      :options="{ draggable: '.item_content' }"
       v-model="item_list_draggable"
       :group="groupName"
       @start="drag = true"
@@ -36,107 +37,107 @@
 </template>
 
 <script>
-import draggable from "vuedraggable";
-export default {
-  name: "DraggableTags",
-  props: {
-    groupName: {
-      type: String,
-      required: false,
-      default: () => "defaultGroup",
-    },
-    title: {
-      type: String,
-      required: false,
-      default: () => "",
-    },
-    items: {
-      type: Array,
-      required: false,
-      default: () => [],
-    },
-    max: {
-      type: Number,
-      required: false,
-      default: () => 0,
-    },
-    disable: {
-      type: Boolean,
-      required: false,
-      default: () => false,
-    },
-    showAdd: {
-      type: Boolean,
-      required: false,
-      default: () => true,
-    },
-    showDelete: {
-      type: Boolean,
-      required: false,
-      default: () => true,
-    },
-  },
-  components: {
-    draggable,
-  },
-  data() {
-    return {
-      item_list: [],
-    };
-  },
-  watch: {
-    items: {
-      handler(newValue) {
-        this.item_list = newValue;
+  import draggable from 'vuedraggable';
+  export default {
+    name: 'DraggableTags',
+    props: {
+      groupName: {
+        type: String,
+        required: false,
+        default: () => 'defaultGroup',
       },
-      // 代表在wacth里声明了items这个方法之后立即先去执行handler方法
-      immediate: true,
-      deep: true, // 可以深度检测到 obj 对象的属性值的变化
+      title: {
+        type: String,
+        required: false,
+        default: () => '',
+      },
+      items: {
+        type: Array,
+        required: false,
+        default: () => [],
+      },
+      max: {
+        type: Number,
+        required: false,
+        default: () => 0,
+      },
+      disable: {
+        type: Boolean,
+        required: false,
+        default: () => false,
+      },
+      showAdd: {
+        type: Boolean,
+        required: false,
+        default: () => true,
+      },
+      showDelete: {
+        type: Boolean,
+        required: false,
+        default: () => true,
+      },
     },
-  },
+    components: {
+      draggable,
+    },
+    data() {
+      return {
+        item_list: [],
+      };
+    },
+    watch: {
+      items: {
+        handler(newValue) {
+          this.item_list = newValue;
+        },
+        // 代表在wacth里声明了items这个方法之后立即先去执行handler方法
+        immediate: true,
+        deep: true, // 可以深度检测到 obj 对象的属性值的变化
+      },
+    },
 
-  computed: {
-    item_list_draggable: {
-      get() {
-        return this.item_list;
-      },
-      set(value) {
-        this.item_list = value;
-        this.$emit("change", this.item_list);
+    computed: {
+      item_list_draggable: {
+        get() {
+          return this.item_list;
+        },
+        set(value) {
+          this.item_list = value;
+          this.$emit('change', this.item_list);
+        },
       },
     },
-  },
 
-  methods: {
-    add() {
-      let flag = false;
-      if (this.max == 0) {
-        flag = true;
-      } else {
-        if (this.max < this.item_list.length) {
+    methods: {
+      add() {
+        let flag = false;
+        if (this.max == 0) {
           flag = true;
+        } else {
+          if (this.max < this.item_list.length) {
+            flag = true;
+          }
         }
-      }
 
-      if (flag) {
-        this.$emit("tagAdd");
-      }
+        if (flag) {
+          this.$emit('tagAdd');
+        }
+      },
+      del(index) {
+        this.$emit('del', index);
+        // this.item_list.splice(index, 1);
+        // this.$emit("change", this.item_list);
+      },
+      tagClick(index) {
+        console.log(this.item_list[index]);
+        this.$emit('tagClick', this.item_list[index]);
+      },
     },
-    del(index) {
-      this.$emit("del", index);
-      // this.item_list.splice(index, 1);
-      // this.$emit("change", this.item_list);
-    },
-    tagClick(index) {
-      console.log(this.item_list[index]);
-      this.$emit("tagClick", this.item_list[index]);
-    },
-  },
-};
+  };
 </script>
 
 <style lang="less" scoped>
-.item_content {
+  .item_content {
   display: inline;
   padding: 8px 15px;
   border: 1px solid #efefef;

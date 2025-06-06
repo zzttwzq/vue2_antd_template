@@ -1,11 +1,11 @@
-import Mock from 'mockjs'
+import Mock from 'mockjs';
 // import '@/mock/user/current'
 // import '@/mock/user/login'
 // import '@/mock/user/routes'
 
 // 设置全局延时
 Mock.setup({
-    timeout: '200-400'
+  timeout: '200-400',
 });
 //// ### 自动生成的代码 #### ////
 // import '@/mock/common_mock'
